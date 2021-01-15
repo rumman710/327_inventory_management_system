@@ -1,11 +1,21 @@
-<html>
-<head> 
-	<title> Home page||</title>
-</head>
+<?php
+	session_start();
+	// Redirect the user to login page if he is not logged in.
+	if(!isset($_SESSION['loggedIn'])){
+		header('Location: login.php');
+		exit();
+	}
+	
+	require_once('inc/config/constants.php');
+	require_once('inc/config/db.php');
+	require_once('inc/header.html');
+?>
   <body>
-
+<?php
+	require 'inc/navigation.php';
+?>
     <!-- Page Content -->
-    <div class="container-fluid">
+    <div class="container-fluid mt-5">
 	  <div class="row">
 		<div class="col-lg-2">
 		<h1 class="my-4"></h1>
@@ -29,9 +39,7 @@
 						<li class="nav-item">
 							<a class="nav-link active" data-toggle="tab" href="#itemDetailsTab">Item</a>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link" data-toggle="tab" href="#itemImageTab">Upload Image</a>
-						</li>
+						
 					</ul>
 					
 					<!-- Tab panes for item details and image sections -->
@@ -88,9 +96,7 @@
 								  <label for="itemDetailsTotalStock">Total Stock</label>
 								  <input type="text" class="form-control" name="itemDetailsTotalStock" id="itemDetailsTotalStock" readonly>
 								</div>
-								<div class="form-group col-md-3">
-									<div id="imageContainer"></div>
-								</div>
+								
 							  </div>
 							  <button type="button" id="addItem" class="btn btn-success">Add Item</button>
 							  <button type="button" id="updateItemDetailsButton" class="btn btn-primary">Update</button>
@@ -98,41 +104,7 @@
 							  <button type="reset" class="btn" id="itemClear">Clear</button>
 							</form>
 						</div>
-						<div id="itemImageTab" class="container-fluid tab-pane fade">
-							<br>
-							<div id="itemImageMessage"></div>
-							<p>You can upload an image for a particular item using this section.</p> 
-							<p>Please make sure the item is already added to database before uploading the image.</p>
-							<br>							
-							<form name="imageForm" id="imageForm" method="post">
-							  <div class="form-row">
-								<div class="form-group col-md-3" style="display:inline-block">
-								  <label for="itemImageItemNumber">Item Number<span class="requiredIcon">*</span></label>
-								  <input type="text" class="form-control" name="itemImageItemNumber" id="itemImageItemNumber" autocomplete="off">
-								  <div id="itemImageItemNumberSuggestionsDiv" class="customListDivWidth"></div>
-								</div>
-								<div class="form-group col-md-4">
-									<label for="itemImageItemName">Item Name</label>
-									<input type="text" class="form-control" name="itemImageItemName" id="itemImageItemName" readonly>
-								</div>
-							  </div>
-							  <br>
-							  <div class="form-row">
-								  <div class="form-group col-md-7">
-									<label for="itemImageFile">Select Image ( <span class="blueText">jpg</span>, <span class="blueText">jpeg</span>, <span class="blueText">gif</span>, <span class="blueText">png</span> only )</label>
-									<input type="file" class="form-control-file btn btn-dark" id="itemImageFile" name="itemImageFile">
-								  </div>
-							  </div>
-							  <br>
-							  <button type="button" id="updateImageButton" class="btn btn-primary">Upload Image</button>
-							  <button type="button" id="deleteImageButton" class="btn btn-danger">Delete Image</button>
-							  <button type="reset" class="btn">Clear</button>
-							</form>
-						</div>
-					</div>
-				  </div> 
-				</div>
-			  </div>
+					
 			  <div class="tab-pane fade" id="v-pills-purchase" role="tabpanel" aria-labelledby="v-pills-purchase-tab">
 				<div class="card card-outline-secondary my-4">
 				  <div class="card-header">Purchase Details</div>
@@ -147,7 +119,7 @@
 						</div>
 						<div class="form-group col-md-3">
 						  <label for="purchaseDetailsPurchaseDate">Purchase Date<span class="requiredIcon">*</span></label>
-						  <input type="text" class="form-control datepicker" id="purchaseDetailsPurchaseDate" name="purchaseDetailsPurchaseDate" readonly value="2018-05-24">
+						  <input type="text" class="form-control datepicker" id="purchaseDetailsPurchaseDate" name="purchaseDetailsPurchaseDate" readonly value="2021-01-01">
 						</div>
 						<div class="form-group col-md-2">
 						  <label for="purchaseDetailsPurchaseID">Purchase ID</label>
@@ -242,18 +214,7 @@
 						<label for="vendorDetailsVendorAddress2">Address 2</label>
 						<input type="text" class="form-control" id="vendorDetailsVendorAddress2" name="vendorDetailsVendorAddress2">
 					  </div>
-					  <div class="form-row">
-						<div class="form-group col-md-6">
-						  <label for="vendorDetailsVendorCity">City</label>
-						  <input type="text" class="form-control" id="vendorDetailsVendorCity" name="vendorDetailsVendorCity">
-						</div>
-						<div class="form-group col-md-4">
-						  <label for="vendorDetailsVendorDistrict">District</label>
-						  <select id="vendorDetailsVendorDistrict" name="vendorDetailsVendorDistrict" class="form-control chosenSelect">
-							<?php include('inc/districtList.html'); ?>
-						  </select>
-						</div>
-					  </div>					  
+					  					  
 					  <button type="button" id="addVendor" name="addVendor" class="btn btn-success">Add Vendor</button>
 					  <button type="button" id="updateVendorDetailsButton" class="btn btn-primary">Update</button>
 					  <button type="button" id="deleteVendorButton" class="btn btn-danger">Delete</button>
@@ -302,7 +263,7 @@
 						  </div>
 						  <div class="form-group col-md-3">
 							  <label for="saleDetailsSaleDate">Sale Date<span class="requiredIcon">*</span></label>
-							  <input type="text" class="form-control datepicker" id="saleDetailsSaleDate" value="2018-05-24" name="saleDetailsSaleDate" readonly>
+							  <input type="text" class="form-control datepicker" id="saleDetailsSaleDate" value="2021-01-01" name="saleDetailsSaleDate" readonly>
 						  </div>
 					  </div>
 					  <div class="form-row">
@@ -385,18 +346,7 @@
 						<label for="customerDetailsCustomerAddress2">Address 2</label>
 						<input type="text" class="form-control" id="customerDetailsCustomerAddress2" name="customerDetailsCustomerAddress2">
 					  </div>
-					  <div class="form-row">
-						<div class="form-group col-md-6">
-						  <label for="customerDetailsCustomerCity">City</label>
-						  <input type="text" class="form-control" id="customerDetailsCustomerCity" name="customerDetailsCustomerCity">
-						</div>
-						<div class="form-group col-md-4">
-						  <label for="customerDetailsCustomerDistrict">District</label>
-						  <select id="customerDetailsCustomerDistrict" name="customerDetailsCustomerDistrict" class="form-control chosenSelect">
-							<?php include('inc/districtList.html'); ?>
-						  </select>
-						</div>
-					  </div>					  
+					  		  
 					  <button type="button" id="addCustomer" name="addCustomer" class="btn btn-success">Add Customer</button>
 					  <button type="button" id="updateCustomerDetailsButton" class="btn btn-primary">Update</button>
 					  <button type="button" id="deleteCustomerButton" class="btn btn-danger">Delete</button>
@@ -502,11 +452,11 @@
 							  <div class="form-row">
 								  <div class="form-group col-md-3">
 									<label for="saleReportStartDate">Start Date</label>
-									<input type="text" class="form-control datepicker" id="saleReportStartDate" value="2018-05-24" name="saleReportStartDate" readonly>
+									<input type="text" class="form-control datepicker" id="saleReportStartDate" value="2021-01-01" name="saleReportStartDate" readonly>
 								  </div>
 								  <div class="form-group col-md-3">
 									<label for="saleReportEndDate">End Date</label>
-									<input type="text" class="form-control datepicker" id="saleReportEndDate" value="2018-05-24" name="saleReportEndDate" readonly>
+									<input type="text" class="form-control datepicker" id="saleReportEndDate" value="2021-01-01" name="saleReportEndDate" readonly>
 								  </div>
 							  </div>
 							  <button type="button" id="showSaleReport" class="btn btn-dark">Show Report</button>
@@ -522,11 +472,11 @@
 							  <div class="form-row">
 								  <div class="form-group col-md-3">
 									<label for="purchaseReportStartDate">Start Date</label>
-									<input type="text" class="form-control datepicker" id="purchaseReportStartDate" value="2018-05-24" name="purchaseReportStartDate" readonly>
+									<input type="text" class="form-control datepicker" id="purchaseReportStartDate" value="2021-01-01" name="purchaseReportStartDate" readonly>
 								  </div>
 								  <div class="form-group col-md-3">
 									<label for="purchaseReportEndDate">End Date</label>
-									<input type="text" class="form-control datepicker" id="purchaseReportEndDate" value="2018-05-24" name="purchaseReportEndDate" readonly>
+									<input type="text" class="form-control datepicker" id="purchaseReportEndDate" value="2021-01-01" name="purchaseReportEndDate" readonly>
 								  </div>
 							  </div>
 							  <button type="button" id="showPurchaseReport" class="btn btn-dark">Show Report</button>
